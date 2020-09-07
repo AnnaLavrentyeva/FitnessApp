@@ -9,6 +9,7 @@ namespace Fitness.BL.Model
     /// <summary>
     /// User
     /// </summary>
+    [Serializable]
     public class User
     {
         #region User's condition
@@ -19,11 +20,11 @@ namespace Fitness.BL.Model
         /// <summary>
         /// Gender
         /// </summary>
-        public Gender Gender { get; }
+        public Gender Gender { get; set; }
         /// <summary>
         /// DateOfBirth
         /// </summary>
-        public DateTime BirthDate { get; }
+        public DateTime BirthDate { get; set; }
         /// <summary>
         /// Weight
         /// </summary>
@@ -41,8 +42,14 @@ namespace Fitness.BL.Model
         /// <param name="birthDay"> Birthday. </param>
         /// <param name="weight"> Weight. </param>
         /// <param name="height"> Height. </param>
-        public User(string name, Gender gender, DateTime birthDay, 
-                        double weight, double height)
+        
+        public int Age { get { return DateTime.Now.Year - BirthDate.Year; } }
+
+        public User(string name, 
+                    Gender gender, 
+                    DateTime birthDay,
+                    double weight, 
+                    double height)
         {
             #region Set conditions
             if (string.IsNullOrWhiteSpace(name))
@@ -75,9 +82,18 @@ namespace Fitness.BL.Model
         }
         #endregion
 
+        public User(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new ArgumentNullException("User name cannot be empty or null.", nameof(name));
+            }
+            Name = name;
+        }
         public override string ToString()
         {
-            return Name;
+            return Name + " " + Age;
         }
+
     }
 }
